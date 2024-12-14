@@ -39,7 +39,7 @@ bench new-site dev.localhost \
 --admin-password admin \
 --no-mariadb-socket
 # --mariadb-user-host-login-scope='%'
-# --force
+--force
 
 bench --site dev.localhost set-config developer_mode 1
 bench --site dev.localhost clear-cache
