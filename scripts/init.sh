@@ -76,10 +76,9 @@ sed -i '/redis/d' ./Procfile
 # --no-input evita prompts interactivos, asegurando que no solicite contraseñas manualmente.
 bench new-site dev.localhost \
   --mariadb-root-password 123 \
-  --mariadb-user-host-login-scope='%' \
+  --mariadb-user-host-login-scope=% \
   --admin-password admin \
-  --force \
-  --no-input
+  --force
 
 # ---------------------------------------------------------------------------------------
 # 9. CONFIGURACIONES POSTERIORES DEL SITIO
