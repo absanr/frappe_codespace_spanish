@@ -1,21 +1,38 @@
 {
   "name": "Frappe Bench",
+  // Puertos a reenviar
   "forwardPorts": [8000, 9000, 6787],
+
+  // Usuario por defecto dentro del contenedor
   "remoteUser": "frappe",
-  "settings": {
-    "terminal.integrated.defaultProfile.linux": "bash",
-    "debug.node.autoAttach": "disabled"
-  },
+
+  // Archivos de Docker Compose que se usarán para levantar el entorno
   "dockerComposeFile": "./docker-compose.yml",
   "service": "frappe",
+
+  // Ruta principal de trabajo
   "workspaceFolder": "/workspace/frappe-bench",
+
+  // Comando post-creación (ejecutará scripts/init.sh al finalizar la creación del contenedor)
   "postCreateCommand": "bash /workspace/scripts/init.sh",
+
+  // Apagar contenedores cuando cierres el contenedor
   "shutdownAction": "stopCompose",
-  "extensions": [
-    "ms-python.python",
-    "ms-vscode.live-server",
-    "grapecity.gc-excelviewer",
-    "mtxr.sqltools",
-    "visualstudioexptteam.vscodeintellicode"
-  ]
+
+  // CUSTOMIZATIONS: Aquí van los settings de VS Code y las extensiones
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "debug.node.autoAttach": "disabled"
+      },
+      "extensions": [
+        "ms-python.python",
+        "ms-vscode.live-server",
+        "grapecity.gc-excelviewer",
+        "mtxr.sqltools",
+        "visualstudioexptteam.vscodeintellicode"
+      ]
+    }
+  }
 }
