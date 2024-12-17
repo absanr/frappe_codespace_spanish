@@ -53,11 +53,11 @@ cd frappe-bench
 # ---------------------------------------------------------------------------------------
 # 6. CONFIGURACIÓN DE HOSTS PARA SERVICIOS (MARIADB y REDIS)
 # ---------------------------------------------------------------------------------------
-# Usa 127.0.0.1 para que funcione localmente
-bench set-mariadb-host 127.0.0.1
-bench set-redis-cache-host 127.0.0.1:6379
-bench set-redis-queue-host 127.0.0.1:6379
-bench set-redis-socketio-host 127.0.0.1:6379
+# Usa mariadb para MariaDB y los servicios correctos de Redis
+bench set-mariadb-host mariadb
+bench set-redis-cache-host redis-cache:6379
+bench set-redis-queue-host redis-queue:6379
+bench set-redis-socketio-host redis-socketio:6379
 
 # ---------------------------------------------------------------------------------------
 # 7. ELIMINACIÓN DE LÍNEAS REDIS EN PROCFILE
@@ -66,17 +66,15 @@ bench set-redis-socketio-host 127.0.0.1:6379
 # porque se usarán contenedores externos de Redis (no locales).
 sed -i '/redis/d' ./Procfile
 
-
 # ---------------------------------------------------------------------------------------
 # Validación de MariaDB antes de continuar
 # ---------------------------------------------------------------------------------------
 echo "Verificando disponibilidad de MariaDB..."
-until mysql -h127.0.0.1 -uroot -p123 -e "SELECT 1;" >/dev/null 2>&1; do
+until mysql -hmariadb -uroot -p123 -e "SELECT 1;" >/dev/null 2>&1; do
   echo "Esperando a que MariaDB esté disponible..."
   sleep 3
 done
 echo "MariaDB está disponible, continuando con la creación del sitio..."
-
 
 # ---------------------------------------------------------------------------------------
 # 8. CREACIÓN DE UN NUEVO SITIO EN FRAPPE
@@ -84,9 +82,10 @@ echo "MariaDB está disponible, continuando con la creación del sitio..."
 bench new-site dev.localhost \
   --mariadb-root-password 123 \
   --mariadb-user-host-login-scope=% \
-  --db-host 127.0.0.1 \
+  --db-host mariadb \
   --admin-password admin \
   --force
+
 
 
 # ---------------------------------------------------------------------------------------
