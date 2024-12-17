@@ -53,24 +53,11 @@ cd frappe-bench
 # ---------------------------------------------------------------------------------------
 # 6. CONFIGURACIÓN DE HOSTS PARA SERVICIOS (MARIADB y REDIS)
 # ---------------------------------------------------------------------------------------
-# Estos comandos ajustan la configuración de Bench para usar los contenedores
-# en lugar de localhost. Se asume que los servicios se llaman 'mariadb', 'redis-cache',
-# 'redis-queue' y 'redis-socketio' conforme a tu docker-compose.
-bench set-mariadb-host mariadb
-bench set-redis-cache-host redis-cache:6379
-bench set-redis-queue-host redis-queue:6379
-bench set-redis-socketio-host redis-socketio:6379
-
-
-# ---------------------------------------------------------------------------------------
-# Validación de MariaDB antes de continuar
-# ---------------------------------------------------------------------------------------
-echo "Verificando disponibilidad de MariaDB..."
-until mysql -hmariadb -uroot -p123 -e "SELECT 1;" >/dev/null 2>&1; do
-  echo "Esperando a que MariaDB esté disponible..."
-  sleep 3
-done
-echo "MariaDB está disponible, continuando con la creación del sitio..."
+# Usa 127.0.0.1 para que funcione localmente
+bench set-mariadb-host 127.0.0.1
+bench set-redis-cache-host 127.0.0.1:6379
+bench set-redis-queue-host 127.0.0.1:6379
+bench set-redis-socketio-host 127.0.0.1:6379
 
 # ---------------------------------------------------------------------------------------
 # 7. ELIMINACIÓN DE LÍNEAS REDIS EN PROCFILE
@@ -79,15 +66,28 @@ echo "MariaDB está disponible, continuando con la creación del sitio..."
 # porque se usarán contenedores externos de Redis (no locales).
 sed -i '/redis/d' ./Procfile
 
+
+# ---------------------------------------------------------------------------------------
+# Validación de MariaDB antes de continuar
+# ---------------------------------------------------------------------------------------
+echo "Verificando disponibilidad de MariaDB..."
+until mysql -h127.0.0.1 -uroot -p123 -e "SELECT 1;" >/dev/null 2>&1; do
+  echo "Esperando a que MariaDB esté disponible..."
+  sleep 3
+done
+echo "MariaDB está disponible, continuando con la creación del sitio..."
+
+
 # ---------------------------------------------------------------------------------------
 # 8. CREACIÓN DE UN NUEVO SITIO EN FRAPPE
 # ---------------------------------------------------------------------------------------
 bench new-site dev.localhost \
   --mariadb-root-password 123 \
   --mariadb-user-host-login-scope=% \
-  --db-host mariadb \
+  --db-host 127.0.0.1 \
   --admin-password admin \
   --force
+
 
 # ---------------------------------------------------------------------------------------
 # 9. CONFIGURACIONES POSTERIORES DEL SITIO
