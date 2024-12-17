@@ -61,6 +61,17 @@ bench set-redis-cache-host redis-cache:6379
 bench set-redis-queue-host redis-queue:6379
 bench set-redis-socketio-host redis-socketio:6379
 
+
+# ---------------------------------------------------------------------------------------
+# Validación de MariaDB antes de continuar
+# ---------------------------------------------------------------------------------------
+echo "Verificando disponibilidad de MariaDB..."
+until mysql -hmariadb -uroot -p123 -e "SELECT 1;" >/dev/null 2>&1; do
+  echo "Esperando a que MariaDB esté disponible..."
+  sleep 3
+done
+echo "MariaDB está disponible, continuando con la creación del sitio..."
+
 # ---------------------------------------------------------------------------------------
 # 7. ELIMINACIÓN DE LÍNEAS REDIS EN PROCFILE
 # ---------------------------------------------------------------------------------------
@@ -71,12 +82,10 @@ sed -i '/redis/d' ./Procfile
 # ---------------------------------------------------------------------------------------
 # 8. CREACIÓN DE UN NUEVO SITIO EN FRAPPE
 # ---------------------------------------------------------------------------------------
-# bench new-site crea un nuevo "sitio" (dev.localhost) que se conectará a MariaDB con la
-# contraseña root "123". --force sobrescribe si ya existiera un sitio con ese nombre.
-# --no-input evita prompts interactivos, asegurando que no solicite contraseñas manualmente.
 bench new-site dev.localhost \
   --mariadb-root-password 123 \
   --mariadb-user-host-login-scope=% \
+  --db-host mariadb \
   --admin-password admin \
   --force
 
