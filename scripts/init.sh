@@ -81,10 +81,8 @@ echo "MariaDB está disponible, continuando con la creación del sitio..."
 # ---------------------------------------------------------------------------------------
 bench new-site dev.localhost \
   --mariadb-root-password 123 \
-  --mariadb-user-host-login-scope=% \
-  --db-host mariadb \
   --admin-password admin \
-  --force
+  --db-host mariadb
 
 
 
