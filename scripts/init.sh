@@ -66,7 +66,10 @@ crear_sitio() {
   if ! bench new-site dev.localhost \
     --mariadb-root-password 123 \
     --admin-password admin \
-    --db-host mariadb; then
+    --db-host mariadb \
+    --mariadb-user-host-login-scope=% \
+    --no-mariadb-socket \
+    --force; then
     echo "Fallo al crear el sitio. Reiniciando MariaDB e intentando nuevamente..."
     sudo systemctl restart mariadb || echo "No se pudo reiniciar MariaDB"
     sleep 5
@@ -74,7 +77,10 @@ crear_sitio() {
     bench new-site dev.localhost \
       --mariadb-root-password 123 \
       --admin-password admin \
-      --db-host mariadb || {
+      --db-host mariadb \
+      --mariadb-user-host-login-scope=% \
+      --no-mariadb-socket \
+      --force || {
         echo "Error crítico: No se pudo crear el sitio después de reiniciar MariaDB."
         exit 1
       }
