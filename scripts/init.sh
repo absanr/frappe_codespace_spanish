@@ -19,11 +19,11 @@ echo "Permisos configurados para: $SCRIPT_PATH"
 
 # Configuración de Node.js con NVM
 source /home/frappe/.nvm/nvm.sh
-nvm install 18
-nvm alias default 18
-nvm use 18
-npm install -g yarn
-echo "nvm use 18" >> ~/.bashrc
+# nvm install 20
+nvm alias default 20
+nvm use 20
+# npm install -g yarn
+echo "nvm use 20" >> ~/.bashrc
 
 # ---------------------------------------------------------------------------------------
 # Iniciar frappe-bench
