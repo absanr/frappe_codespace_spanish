@@ -22,6 +22,7 @@ source /home/frappe/.nvm/nvm.sh
 nvm install 18
 nvm alias default 18
 nvm use 18
+npm install -g yarn
 echo "nvm use 18" >> ~/.bashrc
 
 # ---------------------------------------------------------------------------------------
