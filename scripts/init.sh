@@ -19,6 +19,7 @@ echo "Permisos configurados para: $SCRIPT_PATH"
 
 # Configuración de Node.js con NVM
 source /home/frappe/.nvm/nvm.sh
+nvm install 18
 nvm alias default 18
 nvm use 18
 echo "nvm use 18" >> ~/.bashrc
